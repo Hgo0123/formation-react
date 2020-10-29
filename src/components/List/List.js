@@ -3,11 +3,11 @@ import CardItem from '../CardItem/CardItem'
 
 
 function List(props) {
-    const {articles, product} = props
+    const {articles, product, categories} = props
     return(
         <div>
-            {articles.map(art => <Article article={art} key={art.id}/>)}
-            {product.map(prod => <CardItem product={prod} key={prod.id}/>)}
+            {articles.map(art => <Article article={art} categorie={categories} key={art.id}/>)}
+            {product.map(prod => <CardItem product={prod} key={prod.name}/>)}
         </div>
     )
 }

@@ -1,18 +1,17 @@
 import List from '../List/List'
 import Title from '../Title/Title'
+import Filter from '../Filters/Filters'
+
+import useArticles from '../../hooks/useArticles/useArticles'
+import useCategories from '../../hooks/useCategories/useCategories'
 
 import { Fragment, useEffect, useState } from 'react'
 
-
 function App() {
-    const [articles, setArticles] = useState([])
+   
     const [title, setTitle] = useState('Homepage')
-
-    useEffect(() => {
-        fetch('http://localhost:3001/articles')
-            .then(response => response.json())
-            .then(data => setArticles(data))
-    }, [])
+    const articles = useArticles()
+    const categories = useCategories();
     
     const product = [
         {
@@ -29,11 +28,31 @@ function App() {
     function handleClick() {
         setTitle('Articles')
     }
+
+   const [filters, setFilters] = useState({
+       title: '',
+       categories: '',
+       published: '',
+   });
+
+   function handleChangeFilter(event) {
+        setFilters({
+            ...filters,
+            [event.target.name]: event.target.value
+        })
+   }
+    
+    const filteredArticles = articles
+    .filter(art => art.title.includes(filters.title))
+    .filter(art => filters.categories === '' || art.category === Number(filters.categories))
+    .filter(art => filters.published === '' || (art.published === true && filters.published === 'published') || (art.published === false && filters.published === 'draft'));
+
     return(
         <Fragment>
             <Title title={title}/>
             <button onClick={handleClick}>Change title</button>
-            <List articles={articles} product={product}/>
+            <Filter title={filters.title} category={filters.categories} published={filters.published} handleChange={handleChangeFilter} categories={categories}/>
+            <List articles={filteredArticles} categories={categories} product={product}/>
         </Fragment>
     )
 }
