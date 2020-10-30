@@ -2,7 +2,6 @@ import './Filter.css'
 function Filter(props){
     const {title, category, handleChange, categories, published} = props
 
-    console.log(category);
     return(
         <div className='filter'>
             <input name="title" type='text' value={title} onChange={handleChange}/>

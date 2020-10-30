@@ -7,7 +7,7 @@ function useArticles() {
         .then(response => response.json())
         .then(data => setArticles(data))
     }, [setArticles])
-    return articles
+    return [articles, setArticles]
 }
 
 export default useArticles;
